@@ -21,14 +21,15 @@ public class MovieRepositoryTest {
 
 	@Test
 	void testSave() throws Exception {
-		Movie batman = repository.save(Movie.builder().title("Batman").build());
+		Movie batman = repository
+				.save(Movie.builder().title("MRT Batman").build());
 		batman = repository
-				.save(batman.toBuilder().title("Batman Begins").build());
+				.save(batman.toBuilder().title("MRT Batman Begins").build());
 
 		Movie terminator = repository
-				.save(Movie.builder().title("Terminator").build());
+				.save(Movie.builder().title("MRT Terminator").build());
 		terminator = repository
-				.save(terminator.toBuilder().title("Terminator 2").build());
+				.save(terminator.toBuilder().title("MRT Terminator 2").build());
 		repository.delete(terminator);
 	}
 

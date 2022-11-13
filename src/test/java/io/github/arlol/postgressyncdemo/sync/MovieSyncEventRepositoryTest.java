@@ -38,10 +38,10 @@ public class MovieSyncEventRepositoryTest {
 		var nextSyncEvent = repository.findAndDeleteNextSyncEvent();
 		assertThat(nextSyncEvent).isEmpty();
 
-		Movie movie = Movie.builder().title("Batman").build();
+		Movie movie = Movie.builder().title("MSERT Batman").build();
 		movie = movieRepository.save(movie);
 		movie = movieRepository
-				.save(movie.toBuilder().title("Batman Begins").build());
+				.save(movie.toBuilder().title("MSERT Batman Begins").build());
 		movieRepository.delete(movie);
 
 		assertThat(repository.findAll()).isNotEmpty();
