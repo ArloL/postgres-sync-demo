@@ -21,6 +21,7 @@ CREATE OR REPLACE FUNCTION movie_sync_function()
 	AS
 $$
 BEGIN
+	PERFORM pg_notify('movie_sync_event_channel', NULL);
 	if (TG_OP = 'INSERT') then
 		INSERT INTO movie_sync_event(movie_id, action) VALUES (NEW.id, substring(TG_OP,1,1));
 		RETURN NEW;
