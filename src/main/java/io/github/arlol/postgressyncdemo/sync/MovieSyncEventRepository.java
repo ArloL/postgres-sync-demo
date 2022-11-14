@@ -20,4 +20,10 @@ public interface MovieSyncEventRepository
 			""")
 	Optional<MovieSyncEvent> findAndDeleteNextSyncEvent();
 
+	@Override
+	@SuppressWarnings("unchecked")
+	default MovieSyncEvent save(MovieSyncEvent entity) {
+		throw new UnsupportedOperationException("Writes are not allowed");
+	}
+
 }

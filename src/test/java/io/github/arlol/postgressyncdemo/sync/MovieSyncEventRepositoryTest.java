@@ -2,6 +2,7 @@ package io.github.arlol.postgressyncdemo.sync;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,9 +26,9 @@ public class MovieSyncEventRepositoryTest extends DatabaseTest {
 
 	@Test
 	void testSave() throws Exception {
-		MovieSyncEvent event = repository
-				.save(MovieSyncEvent.builder().action("I").build());
-		event = repository.save(event.toBuilder().action("U").build());
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+			repository.save(MovieSyncEvent.builder().action("I").build());
+		});
 	}
 
 	@Test
