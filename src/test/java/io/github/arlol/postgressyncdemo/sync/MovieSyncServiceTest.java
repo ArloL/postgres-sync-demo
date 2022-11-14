@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.env.MockEnvironment;
 import org.springframework.test.annotation.Commit;
 
 import io.github.arlol.postgressyncdemo.DatabaseTest;
@@ -13,8 +12,7 @@ import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
 
 @SpringBootTest
-public class MovieSyncServiceTest
-		extends DatabaseTest {
+public class MovieSyncServiceTest extends DatabaseTest {
 
 	@Autowired
 	MovieRepository movieRepository;
@@ -27,7 +25,7 @@ public class MovieSyncServiceTest
 		MovieSyncService movieSyncService = new MovieSyncService(
 				movieSyncEventRepository,
 				movieRepository,
-				new MockEnvironment()
+				true
 		);
 
 		Movie batman = movieRepository
