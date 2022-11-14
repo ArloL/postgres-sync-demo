@@ -10,14 +10,16 @@ import org.springframework.stereotype.Repository;
 public interface MovieSyncEventRepository
 		extends CrudRepository<MovieSyncEvent, Long> {
 
-	@Query("""
-			DELETE FROM
-			    movie_sync_event
-			USING (
-			    SELECT * FROM movie_sync_event LIMIT 1 FOR UPDATE SKIP LOCKED
-			) q
-			WHERE q.id = movie_sync_event.id RETURNING movie_sync_event.*
-			""")
+	@Query(
+		"""
+				DELETE FROM
+				    movie_sync_event
+				USING (
+				    SELECT * FROM movie_sync_event ORDER BY id LIMIT 1 FOR UPDATE SKIP LOCKED
+				) q
+				WHERE q.id = movie_sync_event.id RETURNING movie_sync_event.*
+				"""
+	)
 	Optional<MovieSyncEvent> findAndDeleteNextSyncEvent();
 
 	@Override
