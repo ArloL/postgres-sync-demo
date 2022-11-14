@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+// Explicit import due to r2dbc and jdbc being on the classpath
 @Import(DataSourceAutoConfiguration.class)
 public class PostgresSyncDemoApplication {
 
