@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 
 import org.postgresql.PGNotification;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.scheduling.TaskScheduler;
@@ -25,6 +26,7 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 	private final DataSource dataSource;
 	private final TaskScheduler scheduler;
 	private final MovieSyncServiceTrigger trigger;
+	private final boolean enabled;
 
 	private ScheduledFuture<?> scheduledFuture;
 	private Connection connection;
@@ -32,9 +34,13 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 	public MovieSyncEventPostgresJdbcNotificationListener(
 			DataSourceProperties properties,
 			TaskScheduler scheduler,
-			MovieSyncServiceTrigger trigger
+			MovieSyncServiceTrigger trigger,
+			@Value(
+				"${postgres-sync-demo.movie-sync-service.enabled:true}"
+			) boolean enabled
 	) {
 		this.trigger = trigger;
+		this.enabled = enabled;
 		this.dataSource = properties.initializeDataSourceBuilder()
 				.type(SimpleDriverDataSource.class)
 				.build();
@@ -53,7 +59,9 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		start();
+		if (enabled) {
+			start();
+		}
 	}
 
 	public void start() throws Exception {
