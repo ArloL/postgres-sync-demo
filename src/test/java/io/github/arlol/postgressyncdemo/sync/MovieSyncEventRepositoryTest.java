@@ -5,14 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
+import io.github.arlol.postgressyncdemo.DatabaseTest;
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
 
 @SpringBootTest
-@ActiveProfiles("postgres")
-public class MovieSyncEventRepositoryTest {
+public class MovieSyncEventRepositoryTest extends DatabaseTest {
 
 	@Autowired
 	MovieSyncEventRepository repository;
