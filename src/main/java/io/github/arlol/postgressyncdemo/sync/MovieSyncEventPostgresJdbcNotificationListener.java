@@ -79,7 +79,6 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 				this::checkForNotifications,
 				Duration.ofMillis(150)
 		);
-
 	}
 
 	private boolean isPgConnection(Connection connection) {
