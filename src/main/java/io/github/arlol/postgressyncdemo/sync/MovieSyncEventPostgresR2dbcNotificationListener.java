@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import io.r2dbc.postgresql.api.PostgresqlConnection;
 import io.r2dbc.postgresql.api.PostgresqlResult;
 import io.r2dbc.spi.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 @Service
+@Slf4j
 public class MovieSyncEventPostgresR2dbcNotificationListener
 		implements AutoCloseable, InitializingBean {
 
@@ -57,7 +59,13 @@ public class MovieSyncEventPostgresR2dbcNotificationListener
 							.execute()
 							.flatMap(PostgresqlResult::getRowsUpdated)
 							.thenMany(pgConnection.getNotifications())
-							.doOnNext(notification -> trigger.trigger());
+							.doOnNext(notification -> {
+								log.info(
+										"Got notification: {}",
+										notification.getName()
+								);
+								trigger.trigger();
+							});
 				})
 				.subscribe();
 	}
