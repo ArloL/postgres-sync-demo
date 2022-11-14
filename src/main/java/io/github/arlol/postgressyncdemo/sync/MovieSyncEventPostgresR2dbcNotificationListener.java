@@ -1,7 +1,7 @@
 package io.github.arlol.postgressyncdemo.sync;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.r2dbc.postgresql.api.PostgresqlConnection;
@@ -22,15 +22,13 @@ public class MovieSyncEventPostgresR2dbcNotificationListener
 	public MovieSyncEventPostgresR2dbcNotificationListener(
 			ConnectionFactory connectionFactory,
 			MovieSyncServiceTrigger trigger,
-			Environment environment
+			@Value(
+				"${postgres-sync-demo.movie-sync-service.enabled:true}"
+			) boolean enabled
 	) {
 		this.connectionFactory = connectionFactory;
 		this.trigger = trigger;
-		enabled = environment.getProperty(
-				"postgres-sync-demo.movie-sync-service.enabled",
-				Boolean.class,
-				Boolean.TRUE
-		);
+		this.enabled = enabled;
 	}
 
 	@Override
