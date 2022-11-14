@@ -9,20 +9,18 @@ import java.util.concurrent.ScheduledFuture;
 import javax.sql.DataSource;
 
 import org.postgresql.PGNotification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MovieSyncEventPostgresJdbcNotificationListener
 		implements AutoCloseable, InitializingBean {
-
-	private static final Logger LOG = LoggerFactory
-			.getLogger(MovieSyncEventPostgresJdbcNotificationListener.class);
 
 	private final DataSource dataSource;
 	private final TaskScheduler scheduler;
@@ -81,11 +79,11 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 			var notifications = pgConnection.getNotifications();
 			if (notifications != null) {
 				for (PGNotification notification : notifications) {
-					LOG.info("Got notification: {}", notification.getName());
+					log.info("Got notification: {}", notification.getName());
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error("Exception getting notifications", e);
+			log.error("Exception getting notifications", e);
 		}
 	}
 
