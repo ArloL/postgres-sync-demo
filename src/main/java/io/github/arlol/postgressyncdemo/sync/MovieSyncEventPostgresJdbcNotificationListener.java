@@ -59,8 +59,7 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 	public void start() throws Exception {
 		connection = dataSource.getConnection();
 
-		if (!org.postgresql.PGConnection.class
-				.isAssignableFrom(connection.getClass())) {
+		if (!isPgConnection(connection)) {
 			return;
 		}
 
@@ -73,6 +72,15 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 				Duration.ofMillis(150)
 		);
 
+	}
+
+	private boolean isPgConnection(Connection connection) {
+		try {
+			connection.unwrap(org.postgresql.PGConnection.class);
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 
 	private void checkForNotifications() {
