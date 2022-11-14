@@ -13,11 +13,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service
+// Disable it for now
+// @Service
 @Slf4j
 public class MovieSyncEventPostgresJdbcNotificationListener
 		implements AutoCloseable, InitializingBean {
