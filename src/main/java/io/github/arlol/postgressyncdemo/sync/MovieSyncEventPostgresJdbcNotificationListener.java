@@ -24,14 +24,17 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 
 	private final DataSource dataSource;
 	private final TaskScheduler scheduler;
+	private final MovieSyncServiceTrigger trigger;
 
 	private ScheduledFuture<?> scheduledFuture;
 	private Connection connection;
 
 	public MovieSyncEventPostgresJdbcNotificationListener(
 			DataSourceProperties properties,
-			TaskScheduler scheduler
+			TaskScheduler scheduler,
+			MovieSyncServiceTrigger trigger
 	) {
+		this.trigger = trigger;
 		this.dataSource = properties.initializeDataSourceBuilder()
 				.type(SimpleDriverDataSource.class)
 				.build();
@@ -80,6 +83,7 @@ public class MovieSyncEventPostgresJdbcNotificationListener
 			if (notifications != null) {
 				for (PGNotification notification : notifications) {
 					log.info("Got notification: {}", notification.getName());
+					trigger.trigger();
 				}
 			}
 		} catch (SQLException e) {
