@@ -43,7 +43,9 @@ To see it in action run `MovieSyncServiceTest.java`.
 
 # Consequences
 
-We can't easily add more consumers.
+* We can't easily add more consumers.
+    * We could write the data to e.g. RabbitMQ when we process the queue table entries
+    * This shows that the proposed design is evolvable.
 
 # Resources
 
