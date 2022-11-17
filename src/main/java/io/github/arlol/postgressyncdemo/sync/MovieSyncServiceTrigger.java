@@ -12,7 +12,7 @@ public class MovieSyncServiceTrigger {
 		this.service = service;
 	}
 
-	@Async
+	@Async("singleThreadExecutor")
 	public void trigger() {
 		while (service.sync().isPresent()) {
 
