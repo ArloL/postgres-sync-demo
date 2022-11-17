@@ -68,10 +68,10 @@ public class MovieSyncService {
 	private String syncInsert(long id) {
 		Optional<Movie> movie = movieRepository.findById(id);
 		if (movie.isEmpty()) {
-			log.info("Should insert movie {} but was deleted", id);
+			log.debug("Should insert movie {} but was deleted", id);
 			return "ID";
 		} else {
-			log.info("Should insert movie {}", id);
+			log.debug("Should insert movie {}", id);
 			return "I";
 		}
 	}
@@ -79,16 +79,16 @@ public class MovieSyncService {
 	private String syncUpdate(long id) {
 		Optional<Movie> movie = movieRepository.findById(id);
 		if (movie.isEmpty()) {
-			log.info("Should update movie {} but was deleted", id);
+			log.debug("Should update movie {} but was deleted", id);
 			return "UD";
 		} else {
-			log.info("Should update movie {}", id);
+			log.debug("Should update movie {}", id);
 			return "U";
 		}
 	}
 
 	private String syncDelete(long id) {
-		log.info("Should delete movie {}", id);
+		log.debug("Should delete movie {}", id);
 		return "D";
 	}
 

@@ -60,7 +60,7 @@ public class MovieSyncEventPostgresR2dbcNotificationListener
 							.flatMap(PostgresqlResult::getRowsUpdated)
 							.thenMany(pgConnection.getNotifications())
 							.doOnNext(notification -> {
-								log.info(
+								log.debug(
 										"Got notification: {}",
 										notification.getName()
 								);
