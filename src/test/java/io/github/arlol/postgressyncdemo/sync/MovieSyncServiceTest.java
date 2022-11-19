@@ -10,6 +10,7 @@ import org.springframework.test.annotation.Commit;
 import io.github.arlol.postgressyncdemo.DatabaseTest;
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
+import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 
 @SpringBootTest
 public class MovieSyncServiceTest extends DatabaseTest {
@@ -18,6 +19,8 @@ public class MovieSyncServiceTest extends DatabaseTest {
 	MovieRepository movieRepository;
 	@Autowired
 	MovieSyncEventRepository movieSyncEventRepository;
+	@Autowired
+	WatchListRepository watchListRepository;
 
 	@Test
 	@Commit
@@ -25,6 +28,7 @@ public class MovieSyncServiceTest extends DatabaseTest {
 		MovieSyncService movieSyncService = new MovieSyncService(
 				movieSyncEventRepository,
 				movieRepository,
+				watchListRepository,
 				true
 		);
 

@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
+import io.github.arlol.postgressyncdemo.watchlist.WatchList;
+import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -16,17 +18,20 @@ public class MovieSyncService {
 
 	private final MovieSyncEventRepository repository;
 	private final MovieRepository movieRepository;
+	private final WatchListRepository watchListRepository;
 	private final boolean enabled;
 
 	public MovieSyncService(
 			MovieSyncEventRepository movieSyncEventRepository,
 			MovieRepository movieRepository,
+			WatchListRepository watchListRepository,
 			@Value(
 				"${postgres-sync-demo.movie-sync-service.enabled:true}"
 			) boolean enabled
 	) {
 		this.repository = movieSyncEventRepository;
 		this.movieRepository = movieRepository;
+		this.watchListRepository = watchListRepository;
 		this.enabled = enabled;
 	}
 
@@ -69,9 +74,16 @@ public class MovieSyncService {
 		Optional<Movie> movie = movieRepository.findById(id);
 		if (movie.isEmpty()) {
 			log.debug("Should insert movie {} but was deleted", id);
+			syncDelete(id);
 			return "ID";
 		} else {
 			log.debug("Should insert movie {}", id);
+			movie.map(
+					m -> WatchList.builder()
+							.movieId(m.getId())
+							.title(m.getTitle())
+							.build()
+			).ifPresent(wl -> watchListRepository.save(wl));
 			return "I";
 		}
 	}
@@ -80,15 +92,21 @@ public class MovieSyncService {
 		Optional<Movie> movie = movieRepository.findById(id);
 		if (movie.isEmpty()) {
 			log.debug("Should update movie {} but was deleted", id);
+			syncDelete(id);
 			return "UD";
 		} else {
 			log.debug("Should update movie {}", id);
+			movie.flatMap(m -> {
+				return watchListRepository.findByMovieId(id)
+						.map(wl -> wl.toBuilder().title(m.getTitle()).build());
+			}).map(watchListRepository::save);
 			return "U";
 		}
 	}
 
 	private String syncDelete(long id) {
 		log.debug("Should delete movie {}", id);
+		watchListRepository.deleteById(id);
 		return "D";
 	}
 
