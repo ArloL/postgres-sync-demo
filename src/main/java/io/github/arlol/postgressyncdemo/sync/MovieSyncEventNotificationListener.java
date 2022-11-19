@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
-public class MovieSyncEventPostgresR2dbcNotificationListener
+public class MovieSyncEventNotificationListener
 		implements AutoCloseable, InitializingBean {
 
 	private Disposable subscription;
@@ -21,7 +21,7 @@ public class MovieSyncEventPostgresR2dbcNotificationListener
 	private MovieSyncServiceTrigger trigger;
 	private Boolean enabled;
 
-	public MovieSyncEventPostgresR2dbcNotificationListener(
+	public MovieSyncEventNotificationListener(
 			ConnectionFactory connectionFactory,
 			MovieSyncServiceTrigger trigger,
 			@Value(
