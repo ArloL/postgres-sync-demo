@@ -1,9 +1,14 @@
 package io.github.arlol.postgressyncdemo.movie;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.Optional;
+
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MovieRepository extends CrudRepository<Movie, Long> {
+public interface MovieRepository
+		extends PagingAndSortingRepository<Movie, Long> {
+
+	Optional<Movie> findByTitle(String title);
 
 }
