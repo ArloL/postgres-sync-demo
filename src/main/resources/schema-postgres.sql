@@ -2,6 +2,8 @@
 
 DROP TABLE IF EXISTS "movie";;
 
+DROP TABLE IF EXISTS "watch_list";;
+
 DROP TABLE IF EXISTS "movie_sync_event";;
 
 CREATE TABLE "movie" (
