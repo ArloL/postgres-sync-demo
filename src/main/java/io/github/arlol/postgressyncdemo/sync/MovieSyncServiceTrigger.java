@@ -1,22 +1,29 @@
 package io.github.arlol.postgressyncdemo.sync;
 
-import org.springframework.scheduling.annotation.Async;
+import java.util.concurrent.Executor;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class MovieSyncServiceTrigger {
 
 	private MovieSyncService service;
+	private Executor syncExecutor;
 
-	public MovieSyncServiceTrigger(MovieSyncService service) {
+	public MovieSyncServiceTrigger(
+			Executor syncExecutor,
+			MovieSyncService service
+	) {
+		this.syncExecutor = syncExecutor;
 		this.service = service;
 	}
 
-	@Async("singleThreadExecutor")
 	public void trigger() {
-		while (service.sync().isPresent()) {
+		syncExecutor.execute(() -> {
+			while (service.sync().isPresent()) {
 
-		}
+			}
+		});
 	}
 
 }

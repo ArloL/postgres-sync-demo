@@ -25,7 +25,7 @@ public class PostgresSyncDemoApplication {
 	}
 
 	@Bean
-	public Executor singleThreadExecutor() {
+	public Executor syncExecutor() {
 		return new ThreadPoolExecutor(
 				1,
 				1,
