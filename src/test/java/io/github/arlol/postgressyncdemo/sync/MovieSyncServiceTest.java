@@ -16,7 +16,8 @@ public class MovieSyncServiceTest extends DatabaseTest {
 		MovieSyncService movieSyncService = new MovieSyncService(
 				movieSyncEventRepository,
 				movieRepository,
-				watchListRepository,
+				event -> {
+				},
 				true
 		);
 

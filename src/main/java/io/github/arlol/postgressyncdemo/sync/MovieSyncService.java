@@ -1,6 +1,7 @@
 package io.github.arlol.postgressyncdemo.sync;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
-import io.github.arlol.postgressyncdemo.watchlist.WatchList;
-import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -18,25 +17,25 @@ public class MovieSyncService {
 
 	private final MovieSyncEventRepository repository;
 	private final MovieRepository movieRepository;
-	private final WatchListRepository watchListRepository;
+	private final Consumer<MovieSyncEvent> movieSyncEventProcessor;
 	private final boolean enabled;
 
 	public MovieSyncService(
 			MovieSyncEventRepository movieSyncEventRepository,
 			MovieRepository movieRepository,
-			WatchListRepository watchListRepository,
+			Consumer<MovieSyncEvent> movieSyncEventProcessor,
 			@Value(
 				"${postgres-sync-demo.movie-sync-service.enabled:true}"
 			) boolean enabled
 	) {
 		this.repository = movieSyncEventRepository;
 		this.movieRepository = movieRepository;
-		this.watchListRepository = watchListRepository;
+		this.movieSyncEventProcessor = movieSyncEventProcessor;
 		this.enabled = enabled;
 	}
 
 	@Transactional
-	public Optional<MovieSyncResult> sync() {
+	public Optional<MovieSyncEvent> sync() {
 		if (!enabled) {
 			return Optional.empty();
 		}
@@ -45,16 +44,15 @@ public class MovieSyncService {
 			return Optional.empty();
 		}
 		MovieSyncEvent event = nextSyncEvent.get();
-		String action;
 		switch (event.getAction()) {
 		case "I":
-			action = syncInsert(event.getMovieId());
+			event = syncInsert(event);
 			break;
 		case "U":
-			action = syncUpdate(event.getMovieId());
+			event = syncUpdate(event);
 			break;
 		case "D":
-			action = syncDelete(event.getMovieId());
+			event = syncDelete(event);
 			break;
 		default:
 			throw new IllegalStateException(
@@ -62,52 +60,52 @@ public class MovieSyncService {
 							+ event.getMovieId()
 			);
 		}
-		return Optional.of(
-				MovieSyncResult.builder()
-						.movieId(event.getMovieId())
-						.action(action)
-						.build()
-		);
+
+		movieSyncEventProcessor.accept(event);
+
+		return Optional.of(event);
 	}
 
-	private String syncInsert(long id) {
-		Optional<Movie> movie = movieRepository.findById(id);
+	private MovieSyncEvent syncInsert(MovieSyncEvent event) {
+		Optional<Movie> movie = movieRepository.findById(event.getMovieId());
 		if (movie.isEmpty()) {
-			log.debug("Should insert movie {} but was deleted", id);
-			syncDelete(id);
-			return "ID";
+			log.debug(
+					"Should insert movie {} but was deleted",
+					event.getMovieId()
+			);
+			return event.toBuilder()
+					.action("ID")
+					.movie(Movie.builder().id(event.getMovieId()).build())
+					.build();
 		} else {
-			log.debug("Should insert movie {}", id);
-			movie.map(
-					m -> WatchList.builder()
-							.movieId(m.getId())
-							.title(m.getTitle())
-							.build()
-			).ifPresent(wl -> watchListRepository.save(wl));
-			return "I";
+			log.debug("Should insert movie {}", event.getMovieId());
+			return event.toBuilder().movie(movie.get()).build();
 		}
 	}
 
-	private String syncUpdate(long id) {
-		Optional<Movie> movie = movieRepository.findById(id);
+	private MovieSyncEvent syncUpdate(MovieSyncEvent event) {
+		Optional<Movie> movie = movieRepository.findById(event.getMovieId());
 		if (movie.isEmpty()) {
-			log.debug("Should update movie {} but was deleted", id);
-			syncDelete(id);
-			return "UD";
+			log.debug(
+					"Should update movie {} but was deleted",
+					event.getMovieId()
+			);
+			return event.toBuilder()
+					.action("UD")
+					.movie(Movie.builder().id(event.getMovieId()).build())
+					.build();
 		} else {
-			log.debug("Should update movie {}", id);
-			movie.flatMap(m -> {
-				return watchListRepository.findByMovieId(id)
-						.map(wl -> wl.toBuilder().title(m.getTitle()).build());
-			}).map(watchListRepository::save);
-			return "U";
+			log.debug("Should update movie {}", event.getMovieId());
+			return event.toBuilder().movie(movie.get()).build();
 		}
 	}
 
-	private String syncDelete(long id) {
-		log.debug("Should delete movie {}", id);
-		watchListRepository.deleteById(id);
-		return "D";
+	private MovieSyncEvent syncDelete(MovieSyncEvent event) {
+		log.debug("Should delete movie {}", event.getMovieId());
+		return event.toBuilder()
+				.action("D")
+				.movie(Movie.builder().id(event.getMovieId()).build())
+				.build();
 	}
 
 }
