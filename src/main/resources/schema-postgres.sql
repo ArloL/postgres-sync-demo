@@ -9,6 +9,12 @@ CREATE TABLE "movie" (
 	"title" VARCHAR(128) NOT NULL
 );;
 
+CREATE TABLE "watch_list" (
+	"id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	"movie_id" BIGINT NOT NULL,
+	"title" VARCHAR(128) NOT NULL
+);;
+
 CREATE TABLE "movie_sync_event" (
 	"id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	"action" TEXT NOT NULL check (action in ('I','D','U')),
