@@ -31,7 +31,8 @@ public class PostgresSyncDemoApplication {
 				1,
 				0L,
 				TimeUnit.MILLISECONDS,
-				new LinkedBlockingDeque<>(1)
+				new LinkedBlockingDeque<>(1),
+				new ThreadPoolExecutor.DiscardPolicy()
 		);
 	}
 
