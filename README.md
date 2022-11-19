@@ -62,6 +62,7 @@ To see it in action run `MovieSyncServiceTest.java`.
     * We could write the data to e.g. RabbitMQ when we process the queue table entries
     * This shows that the proposed design is evolvable.
 * The target datastore must be fine with data being only partially in sync
+* You can't parallelize writing the target datastore - otherwise a DELETE can move before the INSERT
 
 # Resources
 
