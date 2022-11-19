@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
-public class MovieSyncEventNotificationListener
+public class MovieSyncEventDatabaseListener
 		implements AutoCloseable, InitializingBean {
 
 	private Disposable subscription;
@@ -21,7 +21,7 @@ public class MovieSyncEventNotificationListener
 	private MovieSyncServiceTrigger trigger;
 	private Boolean enabled;
 
-	public MovieSyncEventNotificationListener(
+	public MovieSyncEventDatabaseListener(
 			ConnectionFactory connectionFactory,
 			MovieSyncServiceTrigger trigger,
 			@Value(
