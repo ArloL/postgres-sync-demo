@@ -3,7 +3,6 @@ package io.github.arlol.postgressyncdemo.movie;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import io.github.arlol.postgressyncdemo.DatabaseTest;
@@ -11,26 +10,26 @@ import io.github.arlol.postgressyncdemo.DatabaseTest;
 @SpringBootTest
 public class MovieRepositoryTest extends DatabaseTest {
 
-	@Autowired
-	MovieRepository repository;
-
 	@Test
 	void testFindAll() throws Exception {
-		assertThat(repository.findAll()).isEmpty();
+		assertThat(movieRepository.findAll()).isEmpty();
 	}
 
 	@Test
 	void testSave() throws Exception {
-		Movie batman = repository
+		Movie batman = movieRepository
 				.save(Movie.builder().title("MRT Batman").build());
-		batman = repository
+		batman = movieRepository
 				.save(batman.toBuilder().title("MRT Batman Begins").build());
+		movieRepository.delete(batman);
 
-		Movie terminator = repository
+		Movie terminator = movieRepository
 				.save(Movie.builder().title("MRT Terminator").build());
-		terminator = repository
+		terminator = movieRepository
 				.save(terminator.toBuilder().title("MRT Terminator 2").build());
-		repository.delete(terminator);
+		movieRepository.delete(terminator);
+
+		movieSyncEventRepository.deleteAll();
 	}
 
 }
