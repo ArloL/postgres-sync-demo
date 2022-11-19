@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 
 import io.github.arlol.postgressyncdemo.DatabaseTest;
 import io.github.arlol.postgressyncdemo.movie.Movie;
@@ -23,7 +22,6 @@ public class MovieSyncServiceTest extends DatabaseTest {
 	WatchListRepository watchListRepository;
 
 	@Test
-	@Commit
 	void testName() throws Exception {
 		MovieSyncService movieSyncService = new MovieSyncService(
 				movieSyncEventRepository,
