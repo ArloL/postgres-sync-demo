@@ -3,7 +3,6 @@ package io.github.arlol.postgressyncdemo.sync;
 import java.util.function.Consumer;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,7 +14,7 @@ public class MovieSyncEventToRabbit implements Consumer<MovieSyncEvent> {
 
 	public MovieSyncEventToRabbit(
 			RabbitTemplate rabbitTemplate,
-			@Value("#{syncEventExchange.getName()}") String exchangeName
+			String exchangeName
 	) {
 		this.rabbitTemplate = rabbitTemplate;
 		this.exchangeName = exchangeName;
