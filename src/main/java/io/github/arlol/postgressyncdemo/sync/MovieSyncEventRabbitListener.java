@@ -8,9 +8,7 @@ public class MovieSyncEventRabbitListener {
 
 	private final MovieSyncEventToDatabase processor;
 
-	public MovieSyncEventRabbitListener(
-			MovieSyncEventToDatabase processor
-	) {
+	public MovieSyncEventRabbitListener(MovieSyncEventToDatabase processor) {
 		this.processor = processor;
 	}
 
