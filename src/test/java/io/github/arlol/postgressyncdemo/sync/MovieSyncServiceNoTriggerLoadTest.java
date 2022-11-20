@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import io.github.arlol.postgressyncdemo.DatabaseTest;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
 @Tag("load")
-@ActiveProfiles("postgres-with-trigger")
-public class MovieSyncServiceLoadTest extends DatabaseTest {
+public class MovieSyncServiceNoTriggerLoadTest extends DatabaseTest {
 
 	@Autowired
 	MovieSyncEventDatabaseListener listener;
@@ -44,7 +42,7 @@ public class MovieSyncServiceLoadTest extends DatabaseTest {
 
 	@Test
 	void test() throws Exception {
-		loadTest.test();
+		loadTest.test(0);
 	}
 
 }
