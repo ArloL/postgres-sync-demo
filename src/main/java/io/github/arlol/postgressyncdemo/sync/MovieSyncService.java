@@ -3,7 +3,6 @@ package io.github.arlol.postgressyncdemo.sync;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +23,7 @@ public class MovieSyncService {
 			MovieSyncEventRepository movieSyncEventRepository,
 			MovieRepository movieRepository,
 			Consumer<MovieSyncEvent> movieSyncEventProcessor,
-			@Value(
-				"${postgres-sync-demo.movie-sync-service.enabled:true}"
-			) boolean enabled
+			boolean enabled
 	) {
 		this.repository = movieSyncEventRepository;
 		this.movieRepository = movieRepository;
