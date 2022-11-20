@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
+import io.github.arlol.postgressyncdemo.tools.DurationMath;
 import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 
 public class LoadTest {
@@ -63,28 +64,35 @@ public class LoadTest {
 	}
 
 	public void test() {
+		test(COUNT);
+	}
+
+	public void test(long expectedCount) {
 		log.info("start");
 
 		long start = System.nanoTime();
 
 		createAndUpdate();
 
-		await().atMost(Duration.ofSeconds(360))
-				.until(() -> movieSyncEventRepository.count() == 0);
-		await().atMost(Duration.ofSeconds(360))
-				.until(() -> watchListRepository.count() == COUNT);
+		Duration timeout = DurationMath.between(
+				Duration.ofMillis(360).multipliedBy(COUNT),
+				Duration.ofSeconds(10),
+				Duration.ofMinutes(5)
+		);
+
+		await().atMost(timeout)
+				.until(() -> watchListRepository.count() == expectedCount);
 
 		delete();
 
-		await().atMost(Duration.ofSeconds(360))
-				.until(() -> movieSyncEventRepository.count() == 0);
-		await().atMost(Duration.ofSeconds(360))
-				.until(() -> watchListRepository.count() == 0);
+		await().atMost(timeout).until(() -> watchListRepository.count() == 0);
 
 		log.info(
 				"ops per second: {}",
 				LoadTest.calculatePerSeconds(start, System.nanoTime())
 		);
+
+		movieSyncEventRepository.deleteAll();
 	}
 
 	private void createAndUpdate() {
