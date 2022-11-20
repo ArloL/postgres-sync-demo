@@ -18,7 +18,7 @@ public class MovieSyncService {
 	private final MovieSyncEventRepository repository;
 	private final MovieRepository movieRepository;
 	private final Consumer<MovieSyncEvent> movieSyncEventProcessor;
-	private final boolean enabled;
+	private boolean enabled;
 
 	public MovieSyncService(
 			MovieSyncEventRepository movieSyncEventRepository,
@@ -31,6 +31,10 @@ public class MovieSyncService {
 		this.repository = movieSyncEventRepository;
 		this.movieRepository = movieRepository;
 		this.movieSyncEventProcessor = movieSyncEventProcessor;
+		this.enabled = enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
