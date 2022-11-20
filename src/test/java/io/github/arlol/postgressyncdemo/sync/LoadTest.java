@@ -27,12 +27,12 @@ public class LoadTest {
 		return oneSecond.divide(timePer, HALF_UP);
 	}
 
-	private Logger log;
-	private MovieSyncEventDatabaseListener listener;
-	private MovieSyncService movieSyncService;
-	private MovieRepository movieRepository;
-	private MovieSyncEventRepository movieSyncEventRepository;
-	private WatchListRepository watchListRepository;
+	private final Logger log;
+	private final MovieSyncEventDatabaseListener listener;
+	private final MovieSyncService movieSyncService;
+	private final MovieRepository movieRepository;
+	private final MovieSyncEventRepository movieSyncEventRepository;
+	private final WatchListRepository watchListRepository;
 
 	public LoadTest(
 			Logger log,
