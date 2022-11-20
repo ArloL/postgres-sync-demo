@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -20,6 +21,7 @@ import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 
 @Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = DatabaseTest.DataSourceInitializer.class)
+@ActiveProfiles({ "postgres", "default" })
 public abstract class DatabaseTest {
 
 	private static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>(
@@ -53,7 +55,6 @@ public abstract class DatabaseTest {
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
 					applicationContext,
 					"spring.test.database.replace=none",
-					"spring.sql.init.platform=postgres",
 					"spring.sql.init.mode=always",
 					"spring.datasource.url=" + DATABASE.getJdbcUrl(),
 					"spring.datasource.username=" + DATABASE.getUsername(),

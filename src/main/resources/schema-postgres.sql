@@ -22,32 +22,3 @@ CREATE TABLE "movie_sync_event" (
 	"action" TEXT NOT NULL check (action in ('I','D','U')),
 	"movie_id" BIGINT NOT NULL
 );;
-
-CREATE OR REPLACE FUNCTION movie_sync_function()
-	RETURNS TRIGGER
-	LANGUAGE PLPGSQL
-	AS
-$$
-BEGIN
-	PERFORM pg_notify('movie_sync_event_channel', NULL);
-	if (TG_OP = 'INSERT') then
-		INSERT INTO movie_sync_event(movie_id, action) VALUES (NEW.id, substring(TG_OP,1,1));
-		RETURN NEW;
-	elsif (TG_OP = 'UPDATE') then
-    	INSERT INTO movie_sync_event(movie_id, action) VALUES (NEW.id, substring(TG_OP,1,1));
-		RETURN NEW;
-    elsif (TG_OP = 'DELETE') then
-		INSERT INTO movie_sync_event(movie_id, action) VALUES (OLD.id, substring(TG_OP,1,1));
-		RETURN OLD;
-	else
-		RAISE WARNING '[movie_sync_function] - unknown action occurred: %, at %', TG_OP, now();
-		RETURN NULL;
-	end if;
-END;
-$$;;
-
-CREATE TRIGGER movie_sync_trigger
-	AFTER INSERT OR UPDATE OR DELETE
-	ON movie
-	FOR EACH ROW
-	EXECUTE PROCEDURE movie_sync_function();;

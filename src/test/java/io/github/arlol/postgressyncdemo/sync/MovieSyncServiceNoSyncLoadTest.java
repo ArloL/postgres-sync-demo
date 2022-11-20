@@ -1,5 +1,6 @@
 package io.github.arlol.postgressyncdemo.sync;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,12 @@ public class MovieSyncServiceNoSyncLoadTest extends DatabaseTest {
 				movieSyncEventRepository,
 				watchListRepository
 		);
+		loadTest.beforeEach();
+	}
+
+	@AfterEach
+	public void afterEach() throws Exception {
+		loadTest.afterEach();
 	}
 
 	@Test

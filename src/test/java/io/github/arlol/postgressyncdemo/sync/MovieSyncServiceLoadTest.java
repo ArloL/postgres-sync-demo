@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import io.github.arlol.postgressyncdemo.MessagingDatabaseTest;
+import io.github.arlol.postgressyncdemo.DatabaseTest;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
 @Tag("load")
 @ActiveProfiles("postgres-with-trigger")
-public class MovieSyncServiceRabbitLoadTest extends MessagingDatabaseTest {
+public class MovieSyncServiceLoadTest extends DatabaseTest {
 
 	@Autowired
 	MovieSyncEventDatabaseListener listener;

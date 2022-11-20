@@ -13,7 +13,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 
 @ContextConfiguration(initializers = MessagingDatabaseTest.Initializer.class)
-@ActiveProfiles({ "rabbitmq", "default" })
+@ActiveProfiles("rabbitmq")
 public abstract class MessagingDatabaseTest extends DatabaseTest {
 
 	private static final RabbitMQContainer BROKER = new RabbitMQContainer(
