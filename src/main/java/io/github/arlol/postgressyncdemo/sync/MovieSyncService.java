@@ -3,14 +3,12 @@ package io.github.arlol.postgressyncdemo.sync;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
 @Slf4j
 public class MovieSyncService {
 
