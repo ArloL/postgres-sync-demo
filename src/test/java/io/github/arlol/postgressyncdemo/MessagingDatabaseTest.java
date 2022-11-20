@@ -2,11 +2,10 @@ package io.github.arlol.postgressyncdemo;
 
 import java.time.Duration;
 
-import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.testcontainers.containers.RabbitMQContainer;
@@ -14,7 +13,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 
 @ContextConfiguration(initializers = MessagingDatabaseTest.Initializer.class)
-@Import(RabbitAutoConfiguration.class)
+@ActiveProfiles({ "rabbitmq", "default" })
 public abstract class MessagingDatabaseTest extends DatabaseTest {
 
 	private static final RabbitMQContainer BROKER = new RabbitMQContainer(
