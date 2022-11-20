@@ -21,7 +21,7 @@ import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 
 @Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = DatabaseTest.DataSourceInitializer.class)
-@ActiveProfiles({ "postgres", "default" })
+@ActiveProfiles({ "default", "postgres" })
 public abstract class DatabaseTest {
 
 	private static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>(
