@@ -21,7 +21,10 @@ public class MessagingConfig {
 
 	@Bean
 	public Queue syncEventQueue() {
-		return QueueBuilder.nonDurable().exclusive().build();
+		// see https://www.rabbitmq.com/consumers.html#single-active-consumer
+		return QueueBuilder.durable()
+				.withArgument("x-single-active-consumer", true)
+				.build();
 	}
 
 	@Bean
