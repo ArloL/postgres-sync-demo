@@ -14,9 +14,7 @@ public class MovieSyncEventToDatabase
 
 	private final WatchListRepository watchListRepository;
 
-	public MovieSyncEventToDatabase(
-			WatchListRepository watchListRepository
-	) {
+	public MovieSyncEventToDatabase(WatchListRepository watchListRepository) {
 		this.watchListRepository = watchListRepository;
 	}
 
