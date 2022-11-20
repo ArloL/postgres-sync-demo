@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.watchlist.WatchList;
 import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class MovieSyncEventToDatabase implements Consumer<MovieSyncEvent> {
 
 	private final WatchListRepository watchListRepository;
@@ -21,6 +23,7 @@ public class MovieSyncEventToDatabase implements Consumer<MovieSyncEvent> {
 	@Override
 	@Transactional
 	public void accept(MovieSyncEvent movieSyncEvent) {
+		log.debug("{}", movieSyncEvent);
 		Movie movie = movieSyncEvent.getMovie();
 		switch (movieSyncEvent.getAction()) {
 		case "I":

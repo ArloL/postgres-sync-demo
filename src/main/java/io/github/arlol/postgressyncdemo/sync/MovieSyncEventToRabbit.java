@@ -5,6 +5,9 @@ import java.util.function.Consumer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MovieSyncEventToRabbit implements Consumer<MovieSyncEvent> {
 
 	private final RabbitTemplate rabbitTemplate;
@@ -20,6 +23,7 @@ public class MovieSyncEventToRabbit implements Consumer<MovieSyncEvent> {
 
 	@Override
 	public void accept(MovieSyncEvent movieSyncEvent) {
+		log.debug("{}", movieSyncEvent);
 		rabbitTemplate.convertAndSend(exchangeName, "", movieSyncEvent);
 	}
 
