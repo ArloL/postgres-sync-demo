@@ -5,6 +5,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
+import io.github.arlol.postgressyncdemo.sync.MovieSyncEvent;
 import io.github.arlol.postgressyncdemo.sync.MovieSyncEventRepository;
 import io.github.arlol.postgressyncdemo.sync.MovieSyncEventToDatabase;
 import io.github.arlol.postgressyncdemo.sync.MovieSyncEventToRabbit;
@@ -56,18 +58,14 @@ public class PostgresSyncDemoApplication {
 			) boolean enabled
 
 	) {
+		Consumer<MovieSyncEvent> movieSyncEventProcessor = movieSyncEventToDatabase;
 		if (movieSyncEventToRabbit.isPresent()) {
-			return new MovieSyncService(
-					movieSyncEventRepository,
-					movieRepository,
-					movieSyncEventToRabbit.get(),
-					enabled
-			);
+			movieSyncEventProcessor = movieSyncEventToRabbit.get();
 		}
 		return new MovieSyncService(
 				movieSyncEventRepository,
 				movieRepository,
-				movieSyncEventToDatabase,
+				movieSyncEventProcessor,
 				enabled
 		);
 	}
