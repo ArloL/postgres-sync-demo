@@ -3,6 +3,7 @@ package io.github.arlol.postgressyncdemo.sync;
 import java.util.function.Consumer;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.watchlist.WatchList;
@@ -18,6 +19,7 @@ public class MovieSyncEventToDatabase implements Consumer<MovieSyncEvent> {
 	}
 
 	@Override
+	@Transactional
 	public void accept(MovieSyncEvent movieSyncEvent) {
 		Movie movie = movieSyncEvent.getMovie();
 		switch (movieSyncEvent.getAction()) {
