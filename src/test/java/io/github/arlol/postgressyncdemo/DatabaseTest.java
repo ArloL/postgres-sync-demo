@@ -24,18 +24,6 @@ import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 @ActiveProfiles({ "default", "postgres" })
 public abstract class DatabaseTest {
 
-	private static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>(
-			"postgres:15.1-alpine"
-	).waitingFor(
-			new WaitAllStrategy().withStrategy(Wait.forListeningPort())
-					.withStrategy(
-							Wait.forLogMessage(
-									".*database system is ready to accept connections.*\\s",
-									2
-							)
-					)
-	);
-
 	public static class DataSourceInitializer implements
 			ApplicationContextInitializer<ConfigurableApplicationContext> {
 
@@ -43,24 +31,34 @@ public abstract class DatabaseTest {
 		public void initialize(
 				ConfigurableApplicationContext applicationContext
 		) {
+			@SuppressWarnings("resource")
+			PostgreSQLContainer<?> database = new PostgreSQLContainer<>(
+					"postgres:15.1-alpine"
+			).waitingFor(
+					new WaitAllStrategy().withStrategy(Wait.forListeningPort())
+							.withStrategy(
+									Wait.forLogMessage(
+											".*database system is ready to accept connections.*\\s",
+											2
+									)
+							)
+			);
+			database.start();
+
 			applicationContext
 					.addApplicationListener((ContextClosedEvent event) -> {
-						DATABASE.stop();
+						database.stop();
 					});
-
-			if (!DATABASE.isRunning()) {
-				DATABASE.start();
-			}
 
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
 					applicationContext,
 					"spring.test.database.replace=none",
 					"spring.sql.init.mode=always",
-					"spring.datasource.url=" + DATABASE.getJdbcUrl(),
-					"spring.datasource.username=" + DATABASE.getUsername(),
-					"spring.datasource.password=" + DATABASE.getPassword(),
+					"spring.datasource.url=" + database.getJdbcUrl(),
+					"spring.datasource.username=" + database.getUsername(),
+					"spring.datasource.password=" + database.getPassword(),
 					"spring.r2dbc.url="
-							+ DATABASE.getJdbcUrl().replace("jdbc", "r2dbc")
+							+ database.getJdbcUrl().replace("jdbc", "r2dbc")
 			);
 		}
 

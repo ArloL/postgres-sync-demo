@@ -16,20 +16,6 @@ import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 @ActiveProfiles("rabbitmq")
 public abstract class MessagingDatabaseTest extends DatabaseTest {
 
-	private static final RabbitMQContainer BROKER = new RabbitMQContainer(
-			"rabbitmq:3.11.3-management-alpine"
-	).withExposedPorts(5672, 15672)
-			.waitingFor(
-					new WaitAllStrategy().withStrategy(Wait.forListeningPort())
-							.withStrategy(
-									Wait.forLogMessage(
-											".*Server startup complete.*",
-											1
-									)
-							)
-							.withStartupTimeout(Duration.ofSeconds(60))
-			);
-
 	public static class Initializer implements
 			ApplicationContextInitializer<ConfigurableApplicationContext> {
 
@@ -37,19 +23,32 @@ public abstract class MessagingDatabaseTest extends DatabaseTest {
 		public void initialize(
 				ConfigurableApplicationContext applicationContext
 		) {
+			@SuppressWarnings("resource")
+			RabbitMQContainer broker = new RabbitMQContainer(
+					"rabbitmq:3.11.3-management-alpine"
+			).withExposedPorts(5672, 15672)
+					.waitingFor(
+							new WaitAllStrategy()
+									.withStrategy(Wait.forListeningPort())
+									.withStrategy(
+											Wait.forLogMessage(
+													".*Server startup complete.*",
+													1
+											)
+									)
+									.withStartupTimeout(Duration.ofSeconds(60))
+					);
+			broker.start();
+
 			applicationContext
 					.addApplicationListener((ContextClosedEvent event) -> {
-						BROKER.stop();
+						broker.stop();
 					});
-
-			if (!BROKER.isRunning()) {
-				BROKER.start();
-			}
 
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
 					applicationContext,
-					"spring.rabbitmq.host=" + BROKER.getHost(),
-					"spring.rabbitmq.port=" + BROKER.getAmqpPort()
+					"spring.rabbitmq.host=" + broker.getHost(),
+					"spring.rabbitmq.port=" + broker.getAmqpPort()
 			);
 		}
 
