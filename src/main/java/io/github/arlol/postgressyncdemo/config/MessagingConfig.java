@@ -21,7 +21,7 @@ public class MessagingConfig {
 
 	@Bean
 	public Queue syncEventQueue() {
-		return QueueBuilder.nonDurable().build();
+		return QueueBuilder.nonDurable().exclusive().build();
 	}
 
 	@Bean
