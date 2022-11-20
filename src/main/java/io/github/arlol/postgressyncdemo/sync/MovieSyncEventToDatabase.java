@@ -9,8 +9,7 @@ import io.github.arlol.postgressyncdemo.watchlist.WatchList;
 import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 
 @Service
-public class MovieSyncEventToDatabase
-		implements Consumer<MovieSyncEvent> {
+public class MovieSyncEventToDatabase implements Consumer<MovieSyncEvent> {
 
 	private final WatchListRepository watchListRepository;
 
