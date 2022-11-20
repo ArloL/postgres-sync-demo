@@ -47,12 +47,11 @@ public abstract class MessagingDatabaseTest extends DatabaseTest {
 				BROKER.start();
 			}
 
-			TestPropertySourceUtils
-					.addInlinedPropertiesToEnvironment(applicationContext,
-//					"spring.rabbitmq.ssl.enabled=false",
-							"spring.rabbitmq.host=" + BROKER.getHost(),
-							"spring.rabbitmq.port=" + BROKER.getAmqpPort()
-					);
+			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+					applicationContext,
+					"spring.rabbitmq.host=" + BROKER.getHost(),
+					"spring.rabbitmq.port=" + BROKER.getAmqpPort()
+			);
 		}
 
 	}
