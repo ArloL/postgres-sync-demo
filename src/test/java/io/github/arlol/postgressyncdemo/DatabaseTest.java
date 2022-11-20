@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -74,11 +73,10 @@ public abstract class DatabaseTest {
 	public WatchListRepository watchListRepository;
 
 	@AfterEach
-	public void afterEach() {
-		assertThat(movieRepository.findAll(Pageable.ofSize(1))).isEmpty();
-		assertThat(movieSyncEventRepository.findAll(Pageable.ofSize(1)))
-				.isEmpty();
-		assertThat(watchListRepository.findAll(Pageable.ofSize(1))).isEmpty();
+	public void checkForEmptyDatabase() {
+		assertThat(movieRepository.findAll()).isEmpty();
+		assertThat(movieSyncEventRepository.findAll()).isEmpty();
+		assertThat(watchListRepository.findAll()).isEmpty();
 	}
 
 }
