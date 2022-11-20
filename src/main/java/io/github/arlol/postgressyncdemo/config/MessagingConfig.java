@@ -6,6 +6,7 @@ import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+
+import io.github.arlol.postgressyncdemo.sync.MovieSyncEventToRabbit;
 
 @Configuration
 @Profile("rabbitmq")
@@ -43,6 +46,17 @@ public class MessagingConfig {
 			FanoutExchange syncEventExchange
 	) {
 		return BindingBuilder.bind(syncEventQueue).to(syncEventExchange);
+	}
+
+	@Bean
+	public MovieSyncEventToRabbit movieSyncEventToRabbit(
+			RabbitTemplate rabbitTemplate,
+			FanoutExchange syncEventExchange
+	) {
+		return new MovieSyncEventToRabbit(
+				rabbitTemplate,
+				syncEventExchange.getName()
+		);
 	}
 
 }
