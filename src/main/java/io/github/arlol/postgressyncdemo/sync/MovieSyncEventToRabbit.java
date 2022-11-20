@@ -23,6 +23,7 @@ public class MovieSyncEventToRabbit implements Consumer<MovieSyncEvent> {
 	@Override
 	public void accept(MovieSyncEvent movieSyncEvent) {
 		log.debug("{}", movieSyncEvent);
+		rabbitTemplate.setChannelTransacted(true);
 		rabbitTemplate.convertAndSend(exchangeName, "", movieSyncEvent);
 	}
 
