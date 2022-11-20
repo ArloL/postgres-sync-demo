@@ -20,6 +20,7 @@ public class MovieSyncEventDatabaseListener
 	private ConnectionFactory connectionFactory;
 	private MovieSyncServiceTrigger trigger;
 	private Boolean enabled;
+	private boolean listening;
 
 	public MovieSyncEventDatabaseListener(
 			ConnectionFactory connectionFactory,
@@ -48,6 +49,14 @@ public class MovieSyncEventDatabaseListener
 		}
 	}
 
+	public boolean isListening() {
+		return listening;
+	}
+
+	public void setListening(boolean listening) {
+		this.listening = listening;
+	}
+
 	public void start() throws Exception {
 		log.debug("start");
 		subscription = Mono.from(connectionFactory.create())
@@ -60,6 +69,7 @@ public class MovieSyncEventDatabaseListener
 							.createStatement("LISTEN movie_sync_event_channel")
 							.execute()
 							.flatMap(PostgresqlResult::getRowsUpdated)
+							.then(Mono.fromRunnable(() -> setListening(true)))
 							.thenMany(pgConnection.getNotifications())
 							.doOnNext(notification -> {
 								log.debug(
@@ -69,6 +79,7 @@ public class MovieSyncEventDatabaseListener
 								trigger.trigger();
 							});
 				})
+				.doOnTerminate(() -> setListening(false))
 				.subscribe();
 	}
 
