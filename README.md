@@ -64,6 +64,18 @@ To see it in action run `MovieSyncServiceTest.java`.
 * The target datastore must be fine with data being only partially in sync
 * You can't parallelize writing the target datastore - otherwise a DELETE can move before the INSERT
 
+# Performance
+
+Run in a Docker environment.
+
+Just inserts: 903-912 operations/second
+
+Inserts and the trigger to write to the queue table: 812-833 operations/second
+
+Inserts, the trigger and direct sync to a different table: 186-185 operations/second
+
+Inserts, the trigger and sync via RabbitMQ to a different table: 118-126 operations/second
+
 # Resources
 
 * <https://brandur.org/job-drain>
