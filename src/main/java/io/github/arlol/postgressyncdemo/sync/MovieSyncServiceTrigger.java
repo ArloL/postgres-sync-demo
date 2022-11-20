@@ -4,7 +4,10 @@ import java.util.concurrent.Executor;
 
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MovieSyncServiceTrigger {
 
 	private MovieSyncService service;
@@ -19,6 +22,7 @@ public class MovieSyncServiceTrigger {
 	}
 
 	public void trigger() {
+		log.debug("trigger");
 		syncExecutor.execute(() -> {
 			while (service.sync().isPresent()) {
 

@@ -38,6 +38,7 @@ public class MovieSyncEventDatabaseListener
 		if (subscription != null) {
 			subscription.dispose();
 		}
+		log.debug("close");
 	}
 
 	@Override
@@ -48,6 +49,7 @@ public class MovieSyncEventDatabaseListener
 	}
 
 	public void start() throws Exception {
+		log.debug("start");
 		subscription = Mono.from(connectionFactory.create())
 				.flatMapMany(connection -> {
 					if (!(connection instanceof PostgresqlConnection)) {
