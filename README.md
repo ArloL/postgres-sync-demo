@@ -84,3 +84,4 @@ Inserts, the trigger and sync via RabbitMQ to a different table: 118-126 operati
 * <https://www.crunchydata.com/blog/message-queuing-using-native-postgresql>
 * <https://wiki.postgresql.org/wiki/Audit_trigger>
 * <https://jschmitz.dev/posts/testcontainers_how_to_use_them_in_your_spring_boot_integration_tests/>
+* <https://www.postgresql.org/message-id/flat/1011786.1669743348%40sss.pgh.pa.us#2cd138e1d2604ccca005407222a56e2f>
