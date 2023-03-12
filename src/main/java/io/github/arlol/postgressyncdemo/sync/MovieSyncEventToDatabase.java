@@ -42,12 +42,6 @@ public class MovieSyncEventToDatabase implements Consumer<MovieSyncEvent> {
 		case "D":
 			watchListRepository.deleteById(movieSyncEvent.getMovieId());
 			break;
-		case "UD":
-			watchListRepository.deleteById(movieSyncEvent.getMovieId());
-			break;
-		case "ID":
-			watchListRepository.deleteById(movieSyncEvent.getMovieId());
-			break;
 		default:
 			throw new IllegalStateException(
 					"Unknown action " + movieSyncEvent.getAction()
