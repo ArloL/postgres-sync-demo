@@ -57,7 +57,7 @@ public class MovieSyncServiceTest extends DatabaseTest {
 
 		assertThat(movieSyncService.sync()).isPresent()
 				.map(o -> o.getAction())
-				.hasValue("UD");
+				.hasValue("D");
 		assertThat(movieSyncService.sync()).isPresent()
 				.map(o -> o.getAction())
 				.hasValue("D");
