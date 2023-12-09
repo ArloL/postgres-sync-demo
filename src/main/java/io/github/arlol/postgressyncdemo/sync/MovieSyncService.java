@@ -37,7 +37,7 @@ public class MovieSyncService {
 			return Optional.empty();
 		}
 		var syncEvent = movieSyncEventRepository.findAndDeleteNextSyncEvent()
-			.map(this::process);
+				.map(this::process);
 		syncEvent.ifPresent(movieSyncEventProcessor::accept);
 		return syncEvent;
 	}
