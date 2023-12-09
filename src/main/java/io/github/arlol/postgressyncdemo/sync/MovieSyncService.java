@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class MovieSyncService {
 
 	private final MovieSyncEventRepository movieSyncEventRepository;
