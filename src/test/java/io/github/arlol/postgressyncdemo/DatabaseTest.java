@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
@@ -16,12 +17,14 @@ import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
+import io.github.arlol.postgressyncdemo.sync.ControllableMovieSyncServiceConfiguration;
 import io.github.arlol.postgressyncdemo.sync.MovieSyncEventRepository;
 import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 
 @Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = DatabaseTest.DataSourceInitializer.class)
 @ActiveProfiles({ "default", "postgres" })
+@SpringBootTest(classes = { ControllableMovieSyncServiceConfiguration.class })
 public abstract class DatabaseTest {
 
 	public static class DataSourceInitializer implements

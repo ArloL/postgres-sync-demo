@@ -27,13 +27,13 @@ public class MovieSyncService {
 		this.enabled = enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	@Transactional
 	public Optional<MovieSyncEvent> sync() {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return Optional.empty();
 		}
 		var syncEvent = movieSyncEventRepository.findAndDeleteNextSyncEvent()

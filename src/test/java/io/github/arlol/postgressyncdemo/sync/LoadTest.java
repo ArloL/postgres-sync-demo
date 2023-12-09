@@ -30,7 +30,7 @@ public class LoadTest {
 
 	private final Logger log;
 	private final MovieSyncEventDatabaseListener listener;
-	private final MovieSyncService movieSyncService;
+	private final ControllableMovieSyncService movieSyncService;
 	private final MovieRepository movieRepository;
 	private final MovieSyncEventRepository movieSyncEventRepository;
 	private final WatchListRepository watchListRepository;
@@ -38,7 +38,7 @@ public class LoadTest {
 	public LoadTest(
 			Logger log,
 			MovieSyncEventDatabaseListener listener,
-			MovieSyncService movieSyncService,
+			ControllableMovieSyncService movieSyncService,
 			MovieRepository movieRepository,
 			MovieSyncEventRepository movieSyncEventRepository,
 			WatchListRepository watchListRepository
