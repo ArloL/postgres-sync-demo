@@ -53,6 +53,7 @@ public class MessagingConfig {
 			RabbitTemplate rabbitTemplate,
 			FanoutExchange syncEventExchange
 	) {
+		rabbitTemplate.setChannelTransacted(true);
 		return new MovieSyncEventToRabbit(
 				rabbitTemplate,
 				syncEventExchange.getName()
