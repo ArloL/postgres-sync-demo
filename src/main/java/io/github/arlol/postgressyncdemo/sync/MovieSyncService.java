@@ -52,7 +52,7 @@ public class MovieSyncService {
 		if (movie.isEmpty()) {
 			return event.toBuilder().action("D").build();
 		}
-		return event.toBuilder().movie(movie.get()).build();
+		return event.toBuilder().movie(movie.orElseThrow()).build();
 	}
 
 }

@@ -60,7 +60,7 @@ public class PostgresSyncDemoApplication {
 	) {
 		Consumer<MovieSyncEvent> movieSyncEventProcessor = movieSyncEventToDatabase;
 		if (movieSyncEventToRabbit.isPresent()) {
-			movieSyncEventProcessor = movieSyncEventToRabbit.get();
+			movieSyncEventProcessor = movieSyncEventToRabbit.orElseThrow();
 		}
 		return new MovieSyncService(
 				movieSyncEventRepository,

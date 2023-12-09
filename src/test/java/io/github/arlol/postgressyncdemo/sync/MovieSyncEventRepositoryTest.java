@@ -45,18 +45,21 @@ public class MovieSyncEventRepositoryTest extends DatabaseTest {
 
 		nextSyncEvent = movieSyncEventRepository.findAndDeleteNextSyncEvent();
 		assertThat(nextSyncEvent).isNotEmpty();
-		assertThat(nextSyncEvent.get().getAction()).isEqualTo("I");
-		assertThat(nextSyncEvent.get().getMovieId()).isEqualTo(movie.getId());
+		assertThat(nextSyncEvent.orElseThrow().getAction()).isEqualTo("I");
+		assertThat(nextSyncEvent.orElseThrow().getMovieId())
+				.isEqualTo(movie.getId());
 
 		nextSyncEvent = movieSyncEventRepository.findAndDeleteNextSyncEvent();
 		assertThat(nextSyncEvent).isNotEmpty();
-		assertThat(nextSyncEvent.get().getAction()).isEqualTo("U");
-		assertThat(nextSyncEvent.get().getMovieId()).isEqualTo(movie.getId());
+		assertThat(nextSyncEvent.orElseThrow().getAction()).isEqualTo("U");
+		assertThat(nextSyncEvent.orElseThrow().getMovieId())
+				.isEqualTo(movie.getId());
 
 		nextSyncEvent = movieSyncEventRepository.findAndDeleteNextSyncEvent();
 		assertThat(nextSyncEvent).isNotEmpty();
-		assertThat(nextSyncEvent.get().getAction()).isEqualTo("D");
-		assertThat(nextSyncEvent.get().getMovieId()).isEqualTo(movie.getId());
+		assertThat(nextSyncEvent.orElseThrow().getAction()).isEqualTo("D");
+		assertThat(nextSyncEvent.orElseThrow().getMovieId())
+				.isEqualTo(movie.getId());
 
 		assertThat(movieSyncEventRepository.findAll()).isEmpty();
 	}
