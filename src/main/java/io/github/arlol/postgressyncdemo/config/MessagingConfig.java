@@ -23,12 +23,12 @@ import io.github.arlol.postgressyncdemo.sync.MovieSyncEventToRabbit;
 public class MessagingConfig {
 
 	@Bean
-	public MessageConverter jsonMessageConverter() {
+	MessageConverter jsonMessageConverter() {
 		return new Jackson2JsonMessageConverter();
 	}
 
 	@Bean
-	public Queue syncEventQueue() {
+	Queue syncEventQueue() {
 		// see https://www.rabbitmq.com/consumers.html#single-active-consumer
 		return QueueBuilder.durable()
 				.withArgument("x-single-active-consumer", true)
@@ -36,12 +36,12 @@ public class MessagingConfig {
 	}
 
 	@Bean
-	public FanoutExchange syncEventExchange() {
+	FanoutExchange syncEventExchange() {
 		return ExchangeBuilder.fanoutExchange("movies.exchange").build();
 	}
 
 	@Bean
-	public Binding syncEventBinding(
+	Binding syncEventBinding(
 			Queue syncEventQueue,
 			FanoutExchange syncEventExchange
 	) {
@@ -49,7 +49,7 @@ public class MessagingConfig {
 	}
 
 	@Bean
-	public MovieSyncEventToRabbit movieSyncEventToRabbit(
+	MovieSyncEventToRabbit movieSyncEventToRabbit(
 			RabbitTemplate rabbitTemplate,
 			FanoutExchange syncEventExchange
 	) {
