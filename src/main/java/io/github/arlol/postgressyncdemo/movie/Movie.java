@@ -12,7 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 public class Movie {
 
 	@Id
-	private Long id;
-	private String title;
+	Long id;
+	String title;
 
 }

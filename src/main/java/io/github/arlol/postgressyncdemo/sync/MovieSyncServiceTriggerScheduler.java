@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MovieSyncServiceTriggerScheduler {
 
-	private MovieSyncServiceTrigger trigger;
+	private final MovieSyncServiceTrigger trigger;
 
 	public MovieSyncServiceTriggerScheduler(MovieSyncServiceTrigger trigger) {
 		this.trigger = trigger;

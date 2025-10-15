@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import io.r2dbc.postgresql.api.PostgresqlConnection;
 import io.r2dbc.postgresql.api.PostgresqlResult;
 import io.r2dbc.spi.ConnectionFactory;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
@@ -17,9 +19,11 @@ public class MovieSyncEventDatabaseListener
 		implements AutoCloseable, InitializingBean {
 
 	private Disposable subscription;
-	private ConnectionFactory connectionFactory;
-	private MovieSyncServiceTrigger trigger;
-	private Boolean enabled;
+	private final ConnectionFactory connectionFactory;
+	private final MovieSyncServiceTrigger trigger;
+	private final Boolean enabled;
+	@Setter
+	@Getter
 	private boolean listening;
 
 	public MovieSyncEventDatabaseListener(
@@ -35,7 +39,7 @@ public class MovieSyncEventDatabaseListener
 	}
 
 	@Override
-	public void close() throws Exception {
+	public void close() {
 		if (subscription != null) {
 			subscription.dispose();
 		}
@@ -43,28 +47,19 @@ public class MovieSyncEventDatabaseListener
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		if (enabled) {
 			start();
 		}
 	}
 
-	public boolean isListening() {
-		return listening;
-	}
-
-	public void setListening(boolean listening) {
-		this.listening = listening;
-	}
-
-	public void start() throws Exception {
+	public void start() {
 		log.debug("start");
 		subscription = Mono.from(connectionFactory.create())
 				.flatMapMany(connection -> {
-					if (!(connection instanceof PostgresqlConnection)) {
+					if (!(connection instanceof PostgresqlConnection pgConnection)) {
 						return connection.close();
 					}
-					PostgresqlConnection pgConnection = (PostgresqlConnection) connection;
 					return pgConnection
 							.createStatement("LISTEN movie_sync_event_channel")
 							.execute()

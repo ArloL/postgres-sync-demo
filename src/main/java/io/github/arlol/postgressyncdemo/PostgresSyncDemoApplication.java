@@ -36,7 +36,7 @@ public class PostgresSyncDemoApplication {
 	}
 
 	@Bean
-	public Executor syncExecutor() {
+	Executor syncExecutor() {
 		return new ThreadPoolExecutor(
 				1,
 				1,
@@ -48,7 +48,7 @@ public class PostgresSyncDemoApplication {
 	}
 
 	@Bean
-	public MovieSyncService movieSyncService(
+	MovieSyncService movieSyncService(
 			MovieSyncEventRepository movieSyncEventRepository,
 			MovieRepository movieRepository,
 			MovieSyncEventToDatabase movieSyncEventToDatabase,

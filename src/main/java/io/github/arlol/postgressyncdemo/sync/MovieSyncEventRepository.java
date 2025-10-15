@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface MovieSyncEventRepository
 		extends CrudRepository<MovieSyncEvent, Long> {
 
-	public static final String FIND_AND_DELETE_NEXT_SYNC_EVENT_QUERY = """
+	static final String FIND_AND_DELETE_NEXT_SYNC_EVENT_QUERY = """
 			WITH target_rows AS MATERIALIZED (
 				SELECT id
 				FROM movie_sync_event

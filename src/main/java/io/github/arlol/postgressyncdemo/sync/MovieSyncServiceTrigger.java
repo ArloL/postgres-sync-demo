@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MovieSyncServiceTrigger {
 
-	private MovieSyncService service;
-	private Executor syncExecutor;
+	private final MovieSyncService service;
+	private final Executor syncExecutor;
 
 	public MovieSyncServiceTrigger(
 			Executor syncExecutor,

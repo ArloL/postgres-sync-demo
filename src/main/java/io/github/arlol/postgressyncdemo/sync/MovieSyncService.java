@@ -7,13 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
+import lombok.Getter;
 
 public class MovieSyncService {
 
 	private final MovieSyncEventRepository movieSyncEventRepository;
 	private final MovieRepository movieRepository;
 	private final Consumer<MovieSyncEvent> movieSyncEventProcessor;
-	private boolean enabled;
+	@Getter
+	private final boolean enabled;
 
 	public MovieSyncService(
 			MovieSyncEventRepository movieSyncEventRepository,
@@ -27,10 +29,6 @@ public class MovieSyncService {
 		this.enabled = enabled;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
 	@Transactional
 	public Optional<MovieSyncEvent> sync() {
 		if (!isEnabled()) {
@@ -38,7 +36,7 @@ public class MovieSyncService {
 		}
 		var syncEvent = movieSyncEventRepository.findAndDeleteNextSyncEvent()
 				.map(this::process);
-		syncEvent.ifPresent(movieSyncEventProcessor::accept);
+		syncEvent.ifPresent(movieSyncEventProcessor);
 		return syncEvent;
 	}
 

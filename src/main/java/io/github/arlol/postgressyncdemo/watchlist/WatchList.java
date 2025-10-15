@@ -10,8 +10,8 @@ import lombok.Value;
 public class WatchList {
 
 	@Id
-	private Long id;
-	private Long movieId;
-	private String title;
+	Long id;
+	Long movieId;
+	String title;
 
 }

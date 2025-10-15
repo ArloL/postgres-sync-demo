@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 @Immutable
 public interface WatchListRepository extends CrudRepository<WatchList, Long> {
 
-	void deleteByMovieId(Long movieId);
-
 	Optional<WatchList> findByMovieId(long id);
 
 }
