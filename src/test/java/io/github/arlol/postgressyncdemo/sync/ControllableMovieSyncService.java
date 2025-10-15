@@ -3,6 +3,8 @@ package io.github.arlol.postgressyncdemo.sync;
 import java.util.function.Consumer;
 
 import io.github.arlol.postgressyncdemo.movie.MovieRepository;
+import lombok.Getter;
+import lombok.Setter;
 
 public class ControllableMovieSyncService extends MovieSyncService {
 
@@ -20,15 +22,8 @@ public class ControllableMovieSyncService extends MovieSyncService {
 		);
 	}
 
+	@Setter
+	@Getter
 	private boolean enabled;
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
 
 }

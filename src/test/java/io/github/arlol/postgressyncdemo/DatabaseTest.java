@@ -36,7 +36,7 @@ public abstract class DatabaseTest {
 		) {
 			@SuppressWarnings("resource")
 			PostgreSQLContainer<?> database = new PostgreSQLContainer<>(
-					"postgres:15.1-alpine"
+					"postgres:18.0-trixie"
 			).waitingFor(
 					new WaitAllStrategy().withStrategy(Wait.forListeningPort())
 							.withStrategy(

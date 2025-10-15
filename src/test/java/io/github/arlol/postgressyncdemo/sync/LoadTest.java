@@ -112,9 +112,9 @@ public class LoadTest {
 	private void delete() {
 		IntStream.range(0, COUNT).parallel().forEach(i -> {
 			movieRepository.findByTitle("a" + i)
-					.ifPresent(movie -> movieRepository.delete(movie));
+					.ifPresent(movieRepository::delete);
 			movieRepository.findByTitle("d" + i)
-					.ifPresent(movie -> movieRepository.delete(movie));
+					.ifPresent(movieRepository::delete);
 		});
 	}
 
