@@ -1,7 +1,6 @@
-version: "3.9"
 services:
   db:
-    image: postgres:15.1-alpine
+    image: postgres:18.0-trixie
     restart: always
     environment:
       - POSTGRES_USER=postgres
