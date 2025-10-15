@@ -25,7 +25,7 @@ public abstract class MessagingDatabaseTest extends DatabaseTest {
 		) {
 			@SuppressWarnings("resource")
 			RabbitMQContainer broker = new RabbitMQContainer(
-					"rabbitmq:3.11.3-management-alpine"
+					"rabbitmq:4.1.4-management"
 			).withExposedPorts(5672, 15672)
 					.waitingFor(
 							new WaitAllStrategy()
