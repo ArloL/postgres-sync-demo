@@ -21,31 +21,31 @@ public class MovieSyncEventToDatabase implements Consumer<MovieSyncEvent> {
 	}
 
 	@Override
-	@Transactional
+	@Transactional("transactionManager")
 	public void accept(MovieSyncEvent movieSyncEvent) {
 		log.debug("{}", movieSyncEvent);
-		Movie movie = movieSyncEvent.getMovie();
-		switch (movieSyncEvent.getAction()) {
+		Movie movie = movieSyncEvent.movie();
+		switch (movieSyncEvent.action()) {
 		case "I":
 			watchListRepository.save(
 					WatchList.builder()
-							.movieId(movie.getId())
-							.title(movie.getTitle())
+							.movieId(movie.id())
+							.title(movie.title())
 							.build()
 			);
 			break;
 		case "U":
-			watchListRepository.findByMovieId(movie.getId())
-					.map(wl -> wl.toBuilder().title(movie.getTitle()).build())
+			watchListRepository.findByMovieId(movie.id())
+					.map(wl -> wl.toBuilder().title(movie.title()).build())
 					.map(watchListRepository::save);
 			break;
 		case "D":
-			watchListRepository.deleteById(movieSyncEvent.getMovieId());
+			watchListRepository.deleteById(movieSyncEvent.movieId());
 			break;
 		default:
 			throw new IllegalStateException(
-					"Unknown action " + movieSyncEvent.getAction()
-							+ " for movie " + movieSyncEvent.getMovie().getId()
+					"Unknown action " + movieSyncEvent.action() + " for movie "
+							+ movieSyncEvent.movie().id()
 			);
 		}
 	}

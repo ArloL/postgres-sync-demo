@@ -25,7 +25,7 @@ public class MovieSyncServiceTest extends DatabaseTest {
 				.save(Movie.builder().title("MSEPNLT Batman").build());
 
 		assertThat(movieSyncService.sync()).isPresent()
-				.map(MovieSyncEvent::getAction)
+				.map(MovieSyncEvent::action)
 				.hasValue("I");
 
 		batman = movieRepository.save(
@@ -33,20 +33,20 @@ public class MovieSyncServiceTest extends DatabaseTest {
 		);
 
 		assertThat(movieSyncService.sync()).isPresent()
-				.map(MovieSyncEvent::getAction)
+				.map(MovieSyncEvent::action)
 				.hasValue("U");
 
 		movieRepository.delete(batman);
 
 		assertThat(movieSyncService.sync()).isPresent()
-				.map(MovieSyncEvent::getAction)
+				.map(MovieSyncEvent::action)
 				.hasValue("D");
 
 		Movie terminator = movieRepository
 				.save(Movie.builder().title("MSEPNLT Terminator").build());
 
 		assertThat(movieSyncService.sync()).isPresent()
-				.map(MovieSyncEvent::getAction)
+				.map(MovieSyncEvent::action)
 				.hasValue("I");
 
 		terminator = movieRepository.save(
@@ -56,10 +56,10 @@ public class MovieSyncServiceTest extends DatabaseTest {
 		movieRepository.delete(terminator);
 
 		assertThat(movieSyncService.sync()).isPresent()
-				.map(MovieSyncEvent::getAction)
+				.map(MovieSyncEvent::action)
 				.hasValue("D");
 		assertThat(movieSyncService.sync()).isPresent()
-				.map(MovieSyncEvent::getAction)
+				.map(MovieSyncEvent::action)
 				.hasValue("D");
 	}
 
