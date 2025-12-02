@@ -6,20 +6,13 @@ import org.springframework.data.annotation.Transient;
 
 import io.github.arlol.postgressyncdemo.movie.Movie;
 import lombok.Builder;
-import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
 
-@Data
 @Builder(toBuilder = true)
-@Jacksonized
-public class MovieSyncEvent {
-
-	@Id
-	private Long id;
-	private String action;
-	private long movieId;
-	@Transient
-	@Value("null")
-	private Movie movie;
+public record MovieSyncEvent(
+		@Id Long id,
+		String action,
+		long movieId,
+		@Transient @Value("null") Movie movie
+) {
 
 }

@@ -29,7 +29,7 @@ public class MovieSyncService {
 		this.enabled = enabled;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	public Optional<MovieSyncEvent> sync() {
 		if (!isEnabled()) {
 			return Optional.empty();
@@ -41,10 +41,10 @@ public class MovieSyncService {
 	}
 
 	private MovieSyncEvent process(MovieSyncEvent event) {
-		if ("D".equals(event.getAction())) {
+		if ("D".equals(event.action())) {
 			return event;
 		}
-		Optional<Movie> movie = movieRepository.findById(event.getMovieId());
+		Optional<Movie> movie = movieRepository.findById(event.movieId());
 		if (movie.isEmpty()) {
 			return event.toBuilder().action("D").build();
 		}
