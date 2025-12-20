@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:18.0-trixie
+    image: postgres:18.1-trixie
     restart: always
     environment:
       - POSTGRES_DB=postgres-sync-demo
