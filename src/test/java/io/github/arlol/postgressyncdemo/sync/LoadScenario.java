@@ -14,7 +14,7 @@ import io.github.arlol.postgressyncdemo.movie.MovieRepository;
 import io.github.arlol.postgressyncdemo.tools.DurationMath;
 import io.github.arlol.postgressyncdemo.watchlist.WatchListRepository;
 
-public class LoadTest {
+public class LoadScenario {
 
 	public static final int COUNT = 10_000;
 
@@ -35,7 +35,7 @@ public class LoadTest {
 	private final MovieSyncEventRepository movieSyncEventRepository;
 	private final WatchListRepository watchListRepository;
 
-	public LoadTest(
+	public LoadScenario(
 			Logger log,
 			MovieSyncEventDatabaseListener listener,
 			ControllableMovieSyncService movieSyncService,
@@ -89,7 +89,7 @@ public class LoadTest {
 
 		log.info(
 				"ops per second: {}",
-				LoadTest.calculatePerSeconds(start, System.nanoTime())
+				LoadScenario.calculatePerSeconds(start, System.nanoTime())
 		);
 
 		movieSyncEventRepository.deleteAll();
