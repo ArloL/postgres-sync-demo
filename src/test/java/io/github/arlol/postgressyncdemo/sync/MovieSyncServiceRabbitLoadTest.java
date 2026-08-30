@@ -20,11 +20,11 @@ public class MovieSyncServiceRabbitLoadTest extends MessagingDatabaseTest {
 	@Autowired
 	ControllableMovieSyncService movieSyncService;
 
-	LoadTest loadTest;
+	LoadScenario loadScenario;
 
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		loadTest = new LoadTest(
+		loadScenario = new LoadScenario(
 				log,
 				listener,
 				movieSyncService,
@@ -32,17 +32,17 @@ public class MovieSyncServiceRabbitLoadTest extends MessagingDatabaseTest {
 				movieSyncEventRepository,
 				watchListRepository
 		);
-		loadTest.beforeEach();
+		loadScenario.beforeEach();
 	}
 
 	@AfterEach
 	public void afterEach() throws Exception {
-		loadTest.afterEach();
+		loadScenario.afterEach();
 	}
 
 	@Test
 	void test() throws Exception {
-		loadTest.test();
+		loadScenario.test();
 	}
 
 }

@@ -12,12 +12,12 @@ public interface MovieSyncEventRepository
 
 	static final String FIND_AND_DELETE_NEXT_SYNC_EVENT_QUERY = """
 			WITH target_rows AS MATERIALIZED (
-				SELECT id
-				FROM movie_sync_event
-				ORDER BY id
-				LIMIT 1
-				FOR UPDATE
-				SKIP LOCKED
+			\tSELECT id
+			\tFROM movie_sync_event
+			\tORDER BY id
+			\tLIMIT 1
+			\tFOR UPDATE
+			\tSKIP LOCKED
 			)
 			DELETE FROM movie_sync_event
 			WHERE id IN (SELECT * FROM target_rows)

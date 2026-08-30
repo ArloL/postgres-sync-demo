@@ -18,11 +18,11 @@ public class MovieSyncServiceNoTriggerLoadTest extends DatabaseTest {
 	@Autowired
 	ControllableMovieSyncService movieSyncService;
 
-	LoadTest loadTest;
+	LoadScenario loadScenario;
 
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		loadTest = new LoadTest(
+		loadScenario = new LoadScenario(
 				log,
 				listener,
 				movieSyncService,
@@ -30,17 +30,17 @@ public class MovieSyncServiceNoTriggerLoadTest extends DatabaseTest {
 				movieSyncEventRepository,
 				watchListRepository
 		);
-		loadTest.beforeEach();
+		loadScenario.beforeEach();
 	}
 
 	@AfterEach
 	public void afterEach() throws Exception {
-		loadTest.afterEach();
+		loadScenario.afterEach();
 	}
 
 	@Test
 	void test() throws Exception {
-		loadTest.test(0);
+		loadScenario.test(0);
 	}
 
 }
