@@ -40,7 +40,7 @@ public class MovieSyncEventToDatabase implements Consumer<MovieSyncEvent> {
 					.map(watchListRepository::save);
 			break;
 		case "D":
-			watchListRepository.deleteById(movieSyncEvent.movieId());
+			watchListRepository.deleteByMovieId(movieSyncEvent.movieId());
 			break;
 		default:
 			throw new IllegalStateException(
